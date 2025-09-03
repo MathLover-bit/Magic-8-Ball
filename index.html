@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Magic 8-Ball</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: radial-gradient(circle at center, #1a1a1a, #000000);
+      font-family: Arial, sans-serif;
+    }
+
+    .ball {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle at center, #111, #000);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0px 0px 40px rgba(0, 255, 255, 0.5);
+      cursor: pointer;
+      position: relative;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .ball:hover {
+      box-shadow: 0px 0px 60px rgba(0, 255, 255, 0.9);
+    }
+
+    .answer {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .answer.show {
+      opacity: 1;
+    }
+
+    @keyframes shake {
+      0% { transform: rotate(0deg) translateX(0); }
+      25% { transform: rotate(5deg) translateX(5px); }
+      50% { transform: rotate(-5deg) translateX(-5px); }
+      75% { transform: rotate(3deg) translateX(3px); }
+      100% { transform: rotate(0deg) translateX(0); }
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="ball" id="magicBall">
+    <div class="answer" id="answerText">Ask me something!</div>
+  </div>
+
+  <!-- Sound effect -->
+  <audio id="shakeSound" src="https://www.soundjay.com/buttons/sounds/button-29.mp3" preload="auto"></audio>
+
+  <script>
+    const ball = document.getElementById("magicBall");
+    const answerText = document.getElementById("answerText");
+    const shakeSound = document.getElementById("shakeSound");
+
+    const answers = [
+      "Yes!",
+      "No!",
+      "Maybe...",
+      "Ask again later.",
+      "Definitely!",
+      "I don’t think so.",
+      "Of course!",
+      "Unlikely.",
+      "It’s possible.",
+      "100% Yes!"
+    ];
+
+    ball.addEventListener("click", () => {
+      // Play sound
+      shakeSound.currentTime = 0; 
+      shakeSound.play();
+
+      // Add shake effect
+      ball.classList.add("shake");
+      
+      // After shake, show new answer
+      setTimeout(() => {
+        ball.classList.remove("shake");
+
+        const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+        answerText.textContent = randomAnswer;
+
+        // Fade in effect
+        answerText.classList.remove("show");
+        setTimeout(() => {
+          answerText.classList.add("show");
+        }, 50);
+
+      }, 500);
+    });
+  </script>
+</body>
+</html>
